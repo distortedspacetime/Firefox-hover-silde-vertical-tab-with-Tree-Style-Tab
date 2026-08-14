@@ -1,0 +1,74 @@
+:root {
+  --thin-tab-width: 5px;
+  --wide-tab-width: 180px;
+  --sidebar-radius: 5px; /* 오른쪽 모서리 둥글기 */
+}
+
+#sidebar-main,
+#sidebar-container,
+#sidebar-launcher-splitter {
+  display: none !important;
+}
+
+/* 1. 바깥 레이아웃 박스 (본문 폭 고정용 - absolute 위치 기준점) */
+#sidebar-box[sidebarcommand="treestyletab_piro_sakura_ne_jp-sidebar-action"] {
+  box-sizing: border-box !important;
+  overflow: visible !important;
+  z-index: 10 !important;
+  position: relative !important;
+  left: -6px !important;
+  margin-right: calc((var(--thin-tab-width) + 4px) * -1) !important;
+  
+  min-width: var(--thin-tab-width) !important;
+  max-width: var(--thin-tab-width) !important;
+  width: var(--thin-tab-width) !important;
+}
+
+/* 2. 안쪽 실질 사이드바: 180px 너비를 유지한 채 화면 왼쪽으로 숨김 */
+#sidebar-box[sidebarcommand="treestyletab_piro_sakura_ne_jp-sidebar-action"] #sidebar {
+  position: absolute !important;
+  top: 0;
+  left: 0;
+  width: var(--wide-tab-width) !important;
+  min-width: var(--wide-tab-width) !important;
+  height: 100% !important;
+
+  /* 보라색 테두리 및 라운딩 */
+  border-right: 5px solid #a838fc !important;
+  border-top-right-radius: var(--sidebar-radius) !important;
+  border-bottom-right-radius: var(--sidebar-radius) !important;
+  overflow: hidden !important;
+  box-shadow: 2px 0px 8px rgba(0, 0, 0, 0.15);
+
+  /* 평소 상태: 왼쪽으로 숨기고 3px + 테두리만 노출 */
+  transform: translateX(calc(-100% + var(--thin-tab-width) + 2px)) !important;
+  
+  /* 부드러운 감속 애니메이션 (cubic-bezier) */
+  transition: transform 220ms cubic-bezier(0.2, 0, 0, 1) !important;
+  box-sizing: border-box !important;
+}
+
+/* 3. 호버 시: 오른쪽으로 부드럽게 튀어나옴 */
+#sidebar-box[sidebarcommand="treestyletab_piro_sakura_ne_jp-sidebar-action"]:hover #sidebar {
+  transform: translateX(0) !important;
+}
+
+#tabbrowser-tabs {
+  visibility: collapse !important;
+}
+
+#sidebar-box[sidebarcommand="treestyletab_piro_sakura_ne_jp-sidebar-action"] + #sidebar-splitter {
+  display: none !important;
+}
+
+#sidebar-box[sidebarcommand="treestyletab_piro_sakura_ne_jp-sidebar-action"] #sidebar-header {
+  visibility: collapse;
+}
+
+#webextpanels-window #sidebar-panel-header {
+  display: none;
+}
+
+#main-window #sidebar-box[sidebarcommand="treestyletab_piro_sakura_ne_jp-sidebar-action"] {
+  left: -6px !important;
+}

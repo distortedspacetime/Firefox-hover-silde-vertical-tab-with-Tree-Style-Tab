@@ -1,7 +1,7 @@
 :root {
-  --thin-tab-width: 5px;
-  --wide-tab-width: 180px;
-  --sidebar-radius: 5px; /* 오른쪽 모서리 둥글기 */
+  --thin-tab-width: 1px;       /* 평소 노출될 쨍한 보라색 선 너비 */
+  --wide-tab-width: 180px;     /* 펼쳐졌을 때 사이드바 너비 */
+  --sidebar-radius: 5px;       /* 우측 모서리 둥글기 */
 }
 
 #sidebar-main,
@@ -10,22 +10,43 @@
   display: none !important;
 }
 
-/* 1. 바깥 레이아웃 박스 (본문 폭 고정용 - absolute 위치 기준점) */
-#sidebar-box[sidebarcommand="treestyletab_piro_sakura_ne_jp-sidebar-action"] {
+/* 1. 최상위 사이드바 박스 (인라인 style 강제 무효화 및 옅은 보라색 바탕 투명화) */
+#sidebar-box[sidebarcommand="treestyletab_piro_sakura_ne_jp-sidebar-action"],
+#sidebar-box {
+  --color-accent-primary: transparent !important;
   box-sizing: border-box !important;
   overflow: visible !important;
-  z-index: 10 !important;
   position: relative !important;
-  left: -6px !important;
-  margin-right: calc((var(--thin-tab-width) + 4px) * -1) !important;
+  z-index: 99 !important;
+  left: 0 !important;
   
-  min-width: var(--thin-tab-width) !important;
-  max-width: var(--thin-tab-width) !important;
-  width: var(--thin-tab-width) !important;
+  /* 마우스 호버 감지용 10px 및 레이아웃 밀림 방지 -10px 마진 */
+  margin-right: -10px !important;
+  min-width: 10px !important;
+  max-width: 10px !important;
+  width: 10px !important;
+
+  appearance: none !important;
+  border: none !important;
+  background: transparent !important;
+  background-color: transparent !important;
+  box-shadow: none !important;
+  outline: none !important;
 }
 
-/* 2. 안쪽 실질 사이드바: 180px 너비를 유지한 채 화면 왼쪽으로 숨김 */
-#sidebar-box[sidebarcommand="treestyletab_piro_sakura_ne_jp-sidebar-action"] #sidebar {
+/* 2. 내부 스태크 및 브라우저 레이어 옅은 보라색 배경 완전 차단 */
+#sidebar-box .sidebar-browser-stack,
+#sidebar-box browser#sidebar {
+  --color-accent-primary: transparent !important;
+  background: transparent !important;
+  background-color: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+/* 3. 실질 사이드바 (1px 쨍한 보라색 선 복구 및 접힘/펼침 설정) */
+#sidebar-box[sidebarcommand="treestyletab_piro_sakura_ne_jp-sidebar-action"] #sidebar,
+#sidebar {
   position: absolute !important;
   top: 0;
   left: 0;
@@ -33,42 +54,78 @@
   min-width: var(--wide-tab-width) !important;
   height: 100% !important;
 
-  /* 보라색 테두리 및 라운딩 */
-  border-right: 5px solid #a838fc !important;
+  /* 테마 배경색 지정 (투과 방지) */
+  background-color: var(--lwt-sidebar-background-color, #2b2a33) !important;
+
+  /* 쨍한 보라색 1px 우측 테두리 지정 */
+  border-right: 1px solid #a838fc !important;
+  border-top: none !important;
+  border-left: none !important;
+  border-bottom: none !important;
+
   border-top-right-radius: var(--sidebar-radius) !important;
   border-bottom-right-radius: var(--sidebar-radius) !important;
   overflow: hidden !important;
-  box-shadow: 2px 0px 8px rgba(0, 0, 0, 0.15);
+  box-shadow: none !important;
+  outline: none !important;
 
-  /* 평소 상태: 왼쪽으로 숨기고 3px + 테두리만 노출 */
-  transform: translateX(calc(-100% + var(--thin-tab-width) + 2px)) !important;
-  
-  /* 부드러운 감속 애니메이션 (cubic-bezier) */
+  /* 접힌 상태: 정확히 1px 쨍한 보라색 선만 바깥으로 노출 */
+  transform: translateX(calc(-100% + var(--thin-tab-width))) !important;
   transition: transform 220ms cubic-bezier(0.2, 0, 0, 1) !important;
   box-sizing: border-box !important;
 }
 
-/* 3. 호버 시: 오른쪽으로 부드럽게 튀어나옴 */
-#sidebar-box[sidebarcommand="treestyletab_piro_sakura_ne_jp-sidebar-action"]:hover #sidebar {
+/* 4. 마우스 호버 시 펼침 */
+#sidebar-box[sidebarcommand="treestyletab_piro_sakura_ne_jp-sidebar-action"]:hover #sidebar,
+#sidebar-box[sidebarcommand="treestyletab_piro_sakura_ne_jp-sidebar-action"] #sidebar:hover {
   transform: translateX(0) !important;
 }
 
+#sidebar-box[sidebarcommand="treestyletab_piro_sakura_ne_jp-sidebar-action"]:not(:hover) #sidebar:not(:hover) {
+  transition-delay: 180ms;
+}
+
+/* 상단 탭바 및 헤더 완전 숨김 */
 #tabbrowser-tabs {
   visibility: collapse !important;
 }
 
-#sidebar-box[sidebarcommand="treestyletab_piro_sakura_ne_jp-sidebar-action"] + #sidebar-splitter {
+#sidebar-header,
+#sidebar-panel-header,
+#sidebar-box[sidebarcommand="treestyletab_piro_sakura_ne_jp-sidebar-action"] #sidebar-header,
+#sidebar-box[sidebarcommand="treestyletab_piro_sakura_ne_jp-sidebar-action"] #sidebar-panel-header {
   display: none !important;
+  visibility: collapse !important;
 }
 
-#sidebar-box[sidebarcommand="treestyletab_piro_sakura_ne_jp-sidebar-action"] #sidebar-header {
-  visibility: collapse;
+/* 스플리터 제거 */
+#sidebar-splitter,
+#sidebar-box + #sidebar-splitter {
+  display: none !important;
+  opacity: 0 !important;
+  width: 0 !important;
+  pointer-events: none !important;
 }
 
-#webextpanels-window #sidebar-panel-header {
-  display: none;
+#appcontent {
+  border: none !important;
+  box-shadow: none !important;
+  outline: none !important;
 }
 
-#main-window #sidebar-box[sidebarcommand="treestyletab_piro_sakura_ne_jp-sidebar-action"] {
-  left: -6px !important;
+/* 파이어폭스 사이드바 오른쪽 경계선 및 분할선 제거 */
+#sidebar-box {
+    border-right: none !important;
+}
+
+#sidebar-splitter {
+    width: 1px !important;
+    margin-left: -1px !important;
+    border: none !important;
+    background-color: transparent !important;
+}
+
+/* TST  iframe 자체의 테두리 제거 */
+#sidebar-box #sidebar {
+    border: none !important;
 }

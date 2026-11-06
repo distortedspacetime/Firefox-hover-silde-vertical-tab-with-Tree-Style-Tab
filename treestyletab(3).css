@@ -1,0 +1,139 @@
+/* =========================================================
+   Tree Style Tab - Extra style rules
+   (TST settings → Appearance → Extra style rules)
+   ========================================================= */
+
+:root {
+  --sidebar-bg: #2b2a33;  /* Sidebar background; keep in sync with #sidebar in userChrome.css */
+}
+
+
+/* ---------- 1. Collapsed-state layout ---------- */
+
+/* Hide the twisty (expand/collapse arrow) and leave 7px to the left of favicons */
+.tab .twisty {
+  visibility: hidden;
+  margin-left: -7px;
+}
+
+/* Push labels to the right so they are fully hidden while collapsed */
+.tab .label {
+  margin-left: 7px;
+}
+
+/* Hide tab close buttons */
+.tab .closebox {
+  visibility: collapse;
+}
+
+
+/* ---------- 2. Background ---------- */
+
+/* Use an opaque color so the theme's translucent purple never shows through.
+   (#tabbar / #all-tabs were the elements causing the purple band.) */
+html,
+body,
+#background,
+#tabbar,
+#all-tabs,
+#tabbar-container,
+.tabs {
+  background: var(--sidebar-bg) !important;
+  background-image: none !important;
+}
+
+/* Hide the scrollbar track (scrolling with the wheel/touchpad still works) */
+html,
+body,
+#tabbar,
+#all-tabs,
+.tabs {
+  scrollbar-width: none !important;
+  scrollbar-color: transparent transparent !important;
+  scrollbar-gutter: auto !important;
+}
+
+#tabbar::-webkit-scrollbar {
+  display: none !important;
+}
+
+
+/* ---------- 3. Borders and shadows ---------- */
+
+/* Force every border color to transparent and remove all shadows,
+   including pseudo-elements */
+*,
+*::before,
+*::after {
+  border-color: transparent !important;
+  box-shadow: none !important;
+}
+
+/* Remove the right border of the root and the tab bar */
+:root,
+#tabbar {
+  border-right: none !important;
+}
+
+
+/* ---------- 4. Tabs ---------- */
+
+/* Fully transparent tab backgrounds in every state, no borders or outlines */
+.tab,
+.tab:hover,
+.tab.active,
+.tab.active:hover,
+.tab.discarded,
+.tab.discarded:hover,
+tab-item-substance,
+tab-item-substance::before,
+tab-item-substance::after {
+  background-color: transparent !important;
+  border: none !important;
+  outline: none !important;
+}
+
+/* Label color: slightly dimmed normally, full brightness on hover */
+.tab {
+  color: rgba(207, 207, 207, 0.75);
+}
+.tab:hover {
+  color: rgba(207, 207, 207, 1) !important;
+}
+
+/* Discarded (unloaded) tabs: hide the label text entirely */
+.tab.discarded {
+  color: transparent !important;
+}
+
+/* Muted tabs are semi-transparent */
+.tab.muted {
+  opacity: 0.5;
+}
+
+
+/* ---------- 5. Container tab colors ---------- */
+
+/* Remove the colored line Firefox Containers add to tabs */
+tab-item-substance[class*="contextual-identity-"] {
+  --contextual-identity-color: transparent !important;
+}
+
+[class*="contextual-identity-"]::before,
+[class*="contextual-identity-"]::after {
+  display: none !important;
+}
+
+
+/* ---------- 6. New tab button ---------- */
+
+/* Show only the + icon, centered */
+:root.sidebar .newtab-button {
+  justify-content: center;
+}
+:root.sidebar .newtab-button .label {
+  margin-inline-start: 0;
+}
+:root.sidebar .newtab-button .label-text {
+  display: none;
+}

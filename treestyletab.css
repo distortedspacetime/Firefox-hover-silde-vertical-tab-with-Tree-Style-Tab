@@ -4,7 +4,16 @@
    ========================================================= */
 
 :root {
-  --sidebar-bg: #2b2a33;  /* Sidebar background; keep in sync with #sidebar in userChrome.css */
+  /* Light mode (default) */
+  --sidebar-bg: #f7f6fb;          /* Sidebar background; keep in sync with #sidebar in userChrome.css */
+  --tab-text-rgb: 21, 20, 26;     /* Tab label color (R, G, B) */
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --sidebar-bg: #2b2a33;
+    --tab-text-rgb: 207, 207, 207;
+  }
 }
 
 
@@ -95,10 +104,10 @@ tab-item-substance::after {
 
 /* Label color: slightly dimmed normally, full brightness on hover */
 .tab {
-  color: rgba(207, 207, 207, 0.75);
+  color: rgba(var(--tab-text-rgb), 0.75);
 }
 .tab:hover {
-  color: rgba(207, 207, 207, 1) !important;
+  color: rgba(var(--tab-text-rgb), 1) !important;
 }
 
 /* Discarded (unloaded) tabs: hide the label text entirely */
